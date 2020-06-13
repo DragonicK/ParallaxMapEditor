@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace MapEditor {
     public partial class Property : Form {
 
-        MapProperty property { get; set; }
+        MapProperty property;
 
         Main main_form;
 

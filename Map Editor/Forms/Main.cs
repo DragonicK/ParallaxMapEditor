@@ -3,9 +3,13 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace MapEditor {
     public partial class Main : Form {
+        [DllImport("user32.dll")]
+        static extern short GetAsyncKeyState(Keys vKey);
+
         const int MaxGridViewValueX = 0;
         const int MaxGridViewValueY = 0;
 
@@ -27,6 +31,9 @@ namespace MapEditor {
         int StartX;
         int StartY;
 
+        int lastMouseX;
+        int lastMouseY;
+
         string ProjectPath = string.Empty;
         string SafeFileName = "NoTitle.mps";
 
@@ -40,19 +47,26 @@ namespace MapEditor {
         Pen coral_pen;
         Pen white_pen;
 
-        readonly SolidBrush brushes_red = new SolidBrush(Color.FromArgb(60, Color.Red));
-        readonly SolidBrush brushes_skyblue = new SolidBrush(Color.FromArgb(60, Color.SkyBlue));
-        readonly SolidBrush brushes_magenta = new SolidBrush(Color.FromArgb(60, Color.Magenta));
-        readonly SolidBrush brushes_gold = new SolidBrush(Color.FromArgb(60, Color.Gold));
-        readonly SolidBrush brushes_aquamarine = new SolidBrush(Color.FromArgb(60, Color.Aquamarine));
-         
-        Font font;
+        SolidBrush brushBackBlock = new SolidBrush(Color.FromArgb(60, Color.Red));
+        SolidBrush brushBackWarp = new SolidBrush(Color.FromArgb(60, Color.SkyBlue));
+        SolidBrush brushBackTrap = new SolidBrush(Color.FromArgb(60, Color.Magenta));
+        SolidBrush brushBackAvoid = new SolidBrush(Color.FromArgb(60, Color.Gold));
+        SolidBrush brushBackChat = new SolidBrush(Color.FromArgb(60, Color.Aquamarine));
+
+        SolidBrush brushForeBlock = new SolidBrush(Color.FromArgb(60, Color.Red));
+        SolidBrush brushForeWarp = new SolidBrush(Color.FromArgb(60, Color.SkyBlue));
+        SolidBrush brushForeTrap = new SolidBrush(Color.FromArgb(60, Color.Magenta));
+        SolidBrush brushForeAvoid = new SolidBrush(Color.FromArgb(60, Color.Gold));
+        SolidBrush brushForeChat = new SolidBrush(Color.FromArgb(60, Color.Aquamarine));
+
+        readonly Font font;
 
         const string TextMissing = "File is missing: direction.png";
         const string DirectionImageFilePath = "./Data Files/direction.png";
 
         public Main() {
             InitializeComponent();
+            InitalizeButtonColors();
 
             panel = new ExportPanel();
             property = new Property();
@@ -130,6 +144,108 @@ namespace MapEditor {
             PictureMap.Invalidate();
         }
 
+        #region Color Buttons
+        private void InitalizeButtonColors() {
+            ButtonBackColor0.Click += ButtonChangeColor;
+            ButtonBackColor1.Click += ButtonChangeColor;
+            ButtonBackColor2.Click += ButtonChangeColor;
+            ButtonBackColor3.Click += ButtonChangeColor;
+            ButtonBackColor4.Click += ButtonChangeColor;
+
+            ButtonForeColor0.Click += ButtonChangeColor;
+            ButtonForeColor1.Click += ButtonChangeColor;
+            ButtonForeColor2.Click += ButtonChangeColor;
+            ButtonForeColor3.Click += ButtonChangeColor;
+            ButtonForeColor4.Click += ButtonChangeColor;
+
+            // Block
+            ButtonBackColor0.BackColor = Color.FromArgb(60, Color.Red);
+            ButtonForeColor0.BackColor = Color.FromArgb(60, Color.Red);
+
+            // Npc Avoid
+            ButtonBackColor1.BackColor = Color.FromArgb(60, Color.Gold);
+            ButtonForeColor1.BackColor = Color.FromArgb(60, Color.Gold);
+
+            // Trap
+            ButtonBackColor2.BackColor = Color.FromArgb(60, Color.Magenta);
+            ButtonForeColor2.BackColor = Color.FromArgb(60, Color.Magenta);
+
+            // Chat
+            ButtonBackColor3.BackColor = Color.FromArgb(60, Color.Aquamarine);
+            ButtonForeColor3.BackColor = Color.FromArgb(60, Color.Aquamarine);
+
+            // Warp
+            ButtonBackColor4.BackColor = Color.FromArgb(60, Color.SkyBlue);
+            ButtonForeColor4.BackColor = Color.FromArgb(60, Color.SkyBlue);
+        }
+
+        private void ButtonChangeColor(object sender, EventArgs e) {
+            var dialog = new ColorDialog() {
+                AllowFullOpen = true,
+                AnyColor = true,
+                FullOpen = true,
+                SolidColorOnly = false
+            };
+
+            SolidBrush brush;
+            var result = dialog.ShowDialog();
+
+            if (result == DialogResult.OK) {
+                brush = new SolidBrush(dialog.Color);
+                ((Button)sender).BackColor = dialog.Color;
+            }
+            else {
+                return;
+            }
+
+            var full_name = ((Button)sender).Name;
+            var index = full_name.Substring(full_name.Length - 1, 1);
+            var name = full_name.Replace(index, string.Empty);
+    
+            if (name == "ButtonBackColor") {
+                switch (int.Parse(index)) {
+                    case 0:
+                        brushBackBlock = brush;
+                        break;
+                    case 1:
+                        brushBackAvoid = brush;
+                        break;
+                    case 2:
+                        brushBackTrap = brush;
+                        break;
+                    case 3:
+                        brushBackChat= brush;
+                        break;
+                    case 4:
+                        brushBackWarp = brush;
+                        break;
+                }
+            }
+            else if (name == "ButtonForeColor") {
+                switch (int.Parse(index)) {
+                    case 0:
+                        brushForeBlock = brush;
+                        break;
+                    case 1:
+                        brushForeAvoid = brush;
+                        break;
+                    case 2:
+                        brushForeTrap = brush;
+                        break;
+                    case 3:
+                        brushForeChat=  brush;
+                        break;
+                    case 4:
+                        brushForeWarp = brush;
+                        break;
+                }
+            }
+
+            PictureMap.Invalidate();
+        }
+
+        #endregion
+
         #region Direction Positions
 
         private void SetDirectionPositions() {
@@ -167,6 +283,24 @@ namespace MapEditor {
 
         private void UpdateTitle() {
             Text = $"Map Editor - {SafeFileName}";
+        }
+
+        private void MenuClose_Click(object sender, EventArgs e) {
+            SafeFileName = "NoTitle.mps";
+            ProjectPath = string.Empty;
+
+            UpdateTitle();
+
+            Map = new Map();
+            Map.Property.Width = DefaultMaxX + 1;
+            Map.Property.Height = DefaultMaxY + 1;
+
+            ScrollStartX.Value = 0;
+            ScrollStartY.Value = 0;
+            LabelX.Text = "X: 0";
+            LabelY.Text = "Y: 0";
+
+            UpdateSize();
         }
 
         private void MenuOpen_Click(object sender, EventArgs e) {
@@ -401,16 +535,74 @@ namespace MapEditor {
                     DiselectAttribute(x, y);
                 }
             }
-            else if (RadioDirection.Checked) {
+
+            if (RadioDirection.Checked) {
                 if (e.Button == MouseButtons.Left) {
                     SetDirection(x, y, e.X, e.Y);
-                }
-                else if (e.Button == MouseButtons.Right) {
-
                 }
             }
 
             PictureMap.Invalidate();
+        }
+
+        private void PictureMap_MouseMove(object sender, MouseEventArgs e) {
+
+            if (GroupAttributes.Enabled) {
+                //var clicked_x = ((StartX * PicSize) + e.X) / TileSize;
+                //var clicked_y = ((StartY * PicSize) + e.Y) / TileSize;
+                //var clicked_tile = GetClickedAreaIndex(clicked_x, clicked_y);
+                var x = (e.X / PicSize) + StartX;
+                var y = (e.Y / PicSize) + StartY;
+
+                if (RadioAttributes.Checked) {
+                    if (e.Button == MouseButtons.Left) {
+                        SelectAttribute(x, y);
+                    }
+                    else if (e.Button == MouseButtons.Right) {
+                        DiselectAttribute(x, y);
+                    }
+
+                    PictureMap.Invalidate();
+                }          
+            }
+
+            if (GetAsyncKeyState(Keys.ShiftKey) < 0) {
+                if (e.X > lastMouseX) {
+                    if (StartX < ScrollStartX.Maximum) {
+                        StartX++;
+                    }
+                }
+                else {
+                    if (StartX > 1) {
+                        StartX--;
+                    }
+                }
+
+                lastMouseX = e.X;
+                ScrollStartX.Value = StartX;
+                LabelX.Text = "X: " + StartX;
+
+                PictureMap.Invalidate();
+            }
+
+            if (GetAsyncKeyState(Keys.ControlKey) < 0) {
+                if (e.Y > lastMouseY) {
+                    if (StartY < ScrollStartY.Maximum) {
+                        StartY++;
+                    }
+                }
+                else {
+                    if (StartY > 1) {
+                        StartY--;
+                    }
+                }
+
+                lastMouseY = e.Y;
+                ScrollStartY.Value = StartY;
+                LabelY.Text = "Y: " + StartY;
+
+                PictureMap.Invalidate();
+            }
         }
 
         private int GetClickedAreaIndex(int clicked_x, int clicked_y) {
@@ -513,9 +705,9 @@ namespace MapEditor {
 
         #region Set Direction
         private void SetDirection(int clicked_x, int clicked_y, int mouseX, int mouseY) {
-            var x = mouseX - (clicked_x * PicSize);
-            var y = mouseY - (clicked_y * PicSize);
-
+            var x = (mouseX + StartX * PicSize) - (clicked_x * PicSize);
+            var y = (mouseY + StartY * PicSize) - (clicked_y * PicSize);
+            
             for (var i = 0; i < MaxDirections; i++) {
                 if (x >= DirectionPositions[i].X && x <= DirectionPositions[i].X + DirectionImageSize) {
                     if (y >= DirectionPositions[i].Y && y <= DirectionPositions[i].Y + DirectionImageSize) {
@@ -692,46 +884,46 @@ namespace MapEditor {
 
         private void DrawAttribute(ref Graphics g, TileType tileType, int x, int y) {
             var letter = string.Empty;
-            var brushes = Brushes.White;
-            var fill = Brushes.Transparent;
+            var back = Brushes.White;
+            var fore = Brushes.White;
 
             switch(tileType) {
                 case TileType.Blocked:
                     letter = "B";
-                    brushes = Brushes.Red;
-                    fill = brushes_red;
+                    back = brushBackBlock;
+                    fore = brushForeBlock;
 
                     break;
                 case TileType.Warp:
                     letter = "W";
-                    brushes = Brushes.SkyBlue;
-                    fill = brushes_skyblue;
+                    back = brushBackWarp;
+                    fore = brushForeWarp;
 
                     break;
                 case TileType.Trap:
                     letter = "T";
-                    brushes = Brushes.Magenta;
-                    fill = brushes_magenta;
+                    back = brushBackTrap;
+                    fore = brushForeTrap;
 
                     break;
                 case TileType.NpcAvoid:
                     letter = "A";
-                    brushes = Brushes.Gold;
-                    fill = brushes_gold;
+                    back = brushBackAvoid;
+                    fore = brushForeAvoid;
 
                     break;
                 case TileType.Chat:
                     letter = "C";
-                    brushes = Brushes.Aquamarine;
-                    fill = brushes_aquamarine;
+                    back = brushBackChat;
+                    fore = brushForeChat;
                     break;
             }
 
             if (tileType != TileType.Walkable) {
-                g.FillRectangle(fill, new RectangleF(x * PicSize, y * PicSize, PicSize, PicSize));
+                g.FillRectangle(back, new RectangleF(x * PicSize, y * PicSize, PicSize, PicSize));
             }
 
-            g.DrawString(letter, font, brushes, 9 + (x * PicSize), 8 + (y * PicSize));
+            g.DrawString(letter, font, fore, 9 + (x * PicSize), 8 + (y * PicSize));
 
         }
 
@@ -936,8 +1128,13 @@ namespace MapEditor {
                 tile_count_y++;
             }
 
-            Map.Property.Width = count_x;
-            Map.Property.Height = count_y;
+            if (Map.Property.Width != count_x) {
+                 Map.Property.Width = count_x;
+            }
+
+            if (Map.Property.Height != count_y) {
+                Map.Property.Height = count_y;
+            }
 
             UpdateSize();
 

@@ -15,38 +15,10 @@ namespace MapEditor {
         public void Show(Map map) {
             Map = map;
 
-            var hash = GenerateHash();
-
-            TextPassword.Text = BuildTextHex(hash);
-            Clipboard.SetText(TextPassword.Text);
-
             Show();
         }
 
-        private byte[] GenerateHash() {
-            const int Length = 32;
-
-            var bytes = new byte[Length];
-            var r = new Random();
-
-            for (var i = 0; i < Length; i++) {
-                bytes[i] = (byte)r.Next(0, 255);
-            }
-            
-            return bytes;
-        }
-
-        private string BuildTextHex(byte[] values) {
-            var result = new StringBuilder(values.Length * 2);
-
-            for (var i = 0; i < values.Length; i++) {
-                result.Append(values[i].ToString("x2"));
-            }
-            
-            return result.ToString();
-        }
-
-        private void ButtonConfirm_Click(object sender, EventArgs e) {
+         private void ButtonConfirm_Click(object sender, EventArgs e) {
             if (!Directory.Exists(Environment.CurrentDirectory + @"\Exported\")) {
                 Directory.CreateDirectory(Environment.CurrentDirectory + @"\Exported\");
             }
@@ -60,11 +32,11 @@ namespace MapEditor {
             var result = dialog.ShowDialog();
 
             if (result == DialogResult.OK) {
-                //var export = new ExportHandler();
+                //var export = new ExportHandler(key, iv);
                 //var saved = export.SaveMap(Map, dialog.FileName);
 
-                var toServer = new ExportServer(Map);
-                toServer.SaveFile(CreateServerFileName(dialog.FileName));
+                //var toServer = new ExportServer(Map);
+                //toServer.SaveFile(CreateServerFileName(dialog.FileName));
 
                 //if (!saved) {
                 //    MessageBox.Show("There was an error while opening the file.");

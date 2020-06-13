@@ -28,6 +28,7 @@
             this.MenuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuClose = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuView = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuGroundView = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +60,16 @@
             this.RadioFringe = new System.Windows.Forms.RadioButton();
             this.RadioGround = new System.Windows.Forms.RadioButton();
             this.GroupAttributes = new System.Windows.Forms.GroupBox();
+            this.ButtonBackColor4 = new System.Windows.Forms.Button();
+            this.ButtonForeColor4 = new System.Windows.Forms.Button();
+            this.ButtonBackColor3 = new System.Windows.Forms.Button();
+            this.ButtonForeColor3 = new System.Windows.Forms.Button();
+            this.ButtonBackColor2 = new System.Windows.Forms.Button();
+            this.ButtonForeColor2 = new System.Windows.Forms.Button();
+            this.ButtonBackColor1 = new System.Windows.Forms.Button();
+            this.ButtonForeColor1 = new System.Windows.Forms.Button();
+            this.ButtonBackColor0 = new System.Windows.Forms.Button();
+            this.ButtonForeColor0 = new System.Windows.Forms.Button();
             this.ButtonClearAttribute = new System.Windows.Forms.Button();
             this.RadioWarp = new System.Windows.Forms.RadioButton();
             this.RadioChat = new System.Windows.Forms.RadioButton();
@@ -98,6 +109,7 @@
             this.MenuOpen,
             this.MenuSave,
             this.MenuSaveAs,
+            this.MenuClose,
             this.MenuExit});
             this.MenuFile.Name = "MenuFile";
             this.MenuFile.Size = new System.Drawing.Size(37, 20);
@@ -123,6 +135,13 @@
             this.MenuSaveAs.Size = new System.Drawing.Size(114, 22);
             this.MenuSaveAs.Text = "Save As";
             this.MenuSaveAs.Click += new System.EventHandler(this.MenuSaveAs_Click);
+            // 
+            // MenuClose
+            // 
+            this.MenuClose.Name = "MenuClose";
+            this.MenuClose.Size = new System.Drawing.Size(114, 22);
+            this.MenuClose.Text = "Close";
+            this.MenuClose.Click += new System.EventHandler(this.MenuClose_Click);
             // 
             // MenuExit
             // 
@@ -257,14 +276,13 @@
             this.MenuExportTypeA,
             this.MenuExportTypeB});
             this.MenuExportToClient.Name = "MenuExportToClient";
-            this.MenuExportToClient.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportToClient.Size = new System.Drawing.Size(119, 22);
             this.MenuExportToClient.Text = "To Client";
             // 
             // MenuExportTypeA
             // 
-            this.MenuExportTypeA.Enabled = false;
             this.MenuExportTypeA.Name = "MenuExportTypeA";
-            this.MenuExportTypeA.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportTypeA.Size = new System.Drawing.Size(109, 22);
             this.MenuExportTypeA.Text = "Type A";
             this.MenuExportTypeA.ToolTipText = "Cada imagem parallax é salvada separadamente.";
             this.MenuExportTypeA.Click += new System.EventHandler(this.MenuExportTypeA_Click);
@@ -272,7 +290,7 @@
             // MenuExportTypeB
             // 
             this.MenuExportTypeB.Name = "MenuExportTypeB";
-            this.MenuExportTypeB.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportTypeB.Size = new System.Drawing.Size(109, 22);
             this.MenuExportTypeB.Text = "Type B";
             this.MenuExportTypeB.ToolTipText = "Todos as imagens parallax são salvadas em um único arquivo.";
             this.MenuExportTypeB.Click += new System.EventHandler(this.MenuExportTypeB_Click);
@@ -311,9 +329,9 @@
             this.groupBox2.Controls.Add(this.ScrollParallaxOpacity);
             this.groupBox2.Controls.Add(this.LabelGridOpacity);
             this.groupBox2.Controls.Add(this.ScrollGridOpacity);
-            this.groupBox2.Location = new System.Drawing.Point(794, 386);
+            this.groupBox2.Location = new System.Drawing.Point(794, 420);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(175, 191);
+            this.groupBox2.Size = new System.Drawing.Size(175, 157);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Grid Opacity";
@@ -432,6 +450,16 @@
             // 
             // GroupAttributes
             // 
+            this.GroupAttributes.Controls.Add(this.ButtonBackColor4);
+            this.GroupAttributes.Controls.Add(this.ButtonForeColor4);
+            this.GroupAttributes.Controls.Add(this.ButtonBackColor3);
+            this.GroupAttributes.Controls.Add(this.ButtonForeColor3);
+            this.GroupAttributes.Controls.Add(this.ButtonBackColor2);
+            this.GroupAttributes.Controls.Add(this.ButtonForeColor2);
+            this.GroupAttributes.Controls.Add(this.ButtonBackColor1);
+            this.GroupAttributes.Controls.Add(this.ButtonForeColor1);
+            this.GroupAttributes.Controls.Add(this.ButtonBackColor0);
+            this.GroupAttributes.Controls.Add(this.ButtonForeColor0);
             this.GroupAttributes.Controls.Add(this.ButtonClearAttribute);
             this.GroupAttributes.Controls.Add(this.RadioWarp);
             this.GroupAttributes.Controls.Add(this.RadioChat);
@@ -441,14 +469,104 @@
             this.GroupAttributes.Enabled = false;
             this.GroupAttributes.Location = new System.Drawing.Point(794, 190);
             this.GroupAttributes.Name = "GroupAttributes";
-            this.GroupAttributes.Size = new System.Drawing.Size(175, 191);
+            this.GroupAttributes.Size = new System.Drawing.Size(175, 201);
             this.GroupAttributes.TabIndex = 8;
             this.GroupAttributes.TabStop = false;
             this.GroupAttributes.Text = "Attributes";
             // 
+            // ButtonBackColor4
+            // 
+            this.ButtonBackColor4.Location = new System.Drawing.Point(145, 116);
+            this.ButtonBackColor4.Name = "ButtonBackColor4";
+            this.ButtonBackColor4.Size = new System.Drawing.Size(24, 24);
+            this.ButtonBackColor4.TabIndex = 20;
+            this.ButtonBackColor4.Text = "B";
+            this.ButtonBackColor4.UseVisualStyleBackColor = true;
+            // 
+            // ButtonForeColor4
+            // 
+            this.ButtonForeColor4.Location = new System.Drawing.Point(121, 116);
+            this.ButtonForeColor4.Name = "ButtonForeColor4";
+            this.ButtonForeColor4.Size = new System.Drawing.Size(24, 24);
+            this.ButtonForeColor4.TabIndex = 19;
+            this.ButtonForeColor4.Text = "F";
+            this.ButtonForeColor4.UseVisualStyleBackColor = true;
+            // 
+            // ButtonBackColor3
+            // 
+            this.ButtonBackColor3.Location = new System.Drawing.Point(145, 91);
+            this.ButtonBackColor3.Name = "ButtonBackColor3";
+            this.ButtonBackColor3.Size = new System.Drawing.Size(24, 24);
+            this.ButtonBackColor3.TabIndex = 18;
+            this.ButtonBackColor3.Text = "B";
+            this.ButtonBackColor3.UseVisualStyleBackColor = true;
+            // 
+            // ButtonForeColor3
+            // 
+            this.ButtonForeColor3.Location = new System.Drawing.Point(121, 91);
+            this.ButtonForeColor3.Name = "ButtonForeColor3";
+            this.ButtonForeColor3.Size = new System.Drawing.Size(24, 24);
+            this.ButtonForeColor3.TabIndex = 17;
+            this.ButtonForeColor3.Text = "F";
+            this.ButtonForeColor3.UseVisualStyleBackColor = true;
+            // 
+            // ButtonBackColor2
+            // 
+            this.ButtonBackColor2.Location = new System.Drawing.Point(145, 67);
+            this.ButtonBackColor2.Name = "ButtonBackColor2";
+            this.ButtonBackColor2.Size = new System.Drawing.Size(24, 24);
+            this.ButtonBackColor2.TabIndex = 16;
+            this.ButtonBackColor2.Text = "B";
+            this.ButtonBackColor2.UseVisualStyleBackColor = true;
+            // 
+            // ButtonForeColor2
+            // 
+            this.ButtonForeColor2.Location = new System.Drawing.Point(121, 67);
+            this.ButtonForeColor2.Name = "ButtonForeColor2";
+            this.ButtonForeColor2.Size = new System.Drawing.Size(24, 24);
+            this.ButtonForeColor2.TabIndex = 15;
+            this.ButtonForeColor2.Text = "F";
+            this.ButtonForeColor2.UseVisualStyleBackColor = true;
+            // 
+            // ButtonBackColor1
+            // 
+            this.ButtonBackColor1.Location = new System.Drawing.Point(145, 42);
+            this.ButtonBackColor1.Name = "ButtonBackColor1";
+            this.ButtonBackColor1.Size = new System.Drawing.Size(24, 24);
+            this.ButtonBackColor1.TabIndex = 14;
+            this.ButtonBackColor1.Text = "B";
+            this.ButtonBackColor1.UseVisualStyleBackColor = true;
+            // 
+            // ButtonForeColor1
+            // 
+            this.ButtonForeColor1.Location = new System.Drawing.Point(121, 42);
+            this.ButtonForeColor1.Name = "ButtonForeColor1";
+            this.ButtonForeColor1.Size = new System.Drawing.Size(24, 24);
+            this.ButtonForeColor1.TabIndex = 13;
+            this.ButtonForeColor1.Text = "F";
+            this.ButtonForeColor1.UseVisualStyleBackColor = true;
+            // 
+            // ButtonBackColor0
+            // 
+            this.ButtonBackColor0.Location = new System.Drawing.Point(145, 17);
+            this.ButtonBackColor0.Name = "ButtonBackColor0";
+            this.ButtonBackColor0.Size = new System.Drawing.Size(24, 24);
+            this.ButtonBackColor0.TabIndex = 12;
+            this.ButtonBackColor0.Text = "B";
+            this.ButtonBackColor0.UseVisualStyleBackColor = true;
+            // 
+            // ButtonForeColor0
+            // 
+            this.ButtonForeColor0.Location = new System.Drawing.Point(121, 17);
+            this.ButtonForeColor0.Name = "ButtonForeColor0";
+            this.ButtonForeColor0.Size = new System.Drawing.Size(24, 24);
+            this.ButtonForeColor0.TabIndex = 11;
+            this.ButtonForeColor0.Text = "F";
+            this.ButtonForeColor0.UseVisualStyleBackColor = true;
+            // 
             // ButtonClearAttribute
             // 
-            this.ButtonClearAttribute.Location = new System.Drawing.Point(17, 160);
+            this.ButtonClearAttribute.Location = new System.Drawing.Point(17, 159);
             this.ButtonClearAttribute.Name = "ButtonClearAttribute";
             this.ButtonClearAttribute.Size = new System.Drawing.Size(139, 23);
             this.ButtonClearAttribute.TabIndex = 10;
@@ -460,7 +578,7 @@
             // 
             this.RadioWarp.Location = new System.Drawing.Point(17, 121);
             this.RadioWarp.Name = "RadioWarp";
-            this.RadioWarp.Size = new System.Drawing.Size(109, 19);
+            this.RadioWarp.Size = new System.Drawing.Size(86, 19);
             this.RadioWarp.TabIndex = 9;
             this.RadioWarp.Text = "Warp";
             this.RadioWarp.UseVisualStyleBackColor = true;
@@ -469,7 +587,7 @@
             // 
             this.RadioChat.Location = new System.Drawing.Point(17, 96);
             this.RadioChat.Name = "RadioChat";
-            this.RadioChat.Size = new System.Drawing.Size(109, 19);
+            this.RadioChat.Size = new System.Drawing.Size(68, 19);
             this.RadioChat.TabIndex = 8;
             this.RadioChat.Text = "Chat";
             this.RadioChat.UseVisualStyleBackColor = true;
@@ -478,7 +596,7 @@
             // 
             this.RadioTrap.Location = new System.Drawing.Point(17, 70);
             this.RadioTrap.Name = "RadioTrap";
-            this.RadioTrap.Size = new System.Drawing.Size(109, 19);
+            this.RadioTrap.Size = new System.Drawing.Size(86, 19);
             this.RadioTrap.TabIndex = 6;
             this.RadioTrap.Text = "Trap";
             this.RadioTrap.UseVisualStyleBackColor = true;
@@ -487,7 +605,7 @@
             // 
             this.RadioAvoid.Location = new System.Drawing.Point(17, 45);
             this.RadioAvoid.Name = "RadioAvoid";
-            this.RadioAvoid.Size = new System.Drawing.Size(109, 19);
+            this.RadioAvoid.Size = new System.Drawing.Size(96, 19);
             this.RadioAvoid.TabIndex = 5;
             this.RadioAvoid.Text = "Npc Avoid";
             this.RadioAvoid.UseVisualStyleBackColor = true;
@@ -497,7 +615,7 @@
             this.RadioBlock.Checked = true;
             this.RadioBlock.Location = new System.Drawing.Point(17, 20);
             this.RadioBlock.Name = "RadioBlock";
-            this.RadioBlock.Size = new System.Drawing.Size(109, 19);
+            this.RadioBlock.Size = new System.Drawing.Size(86, 19);
             this.RadioBlock.TabIndex = 4;
             this.RadioBlock.TabStop = true;
             this.RadioBlock.Text = "Block";
@@ -513,6 +631,7 @@
             this.PictureMap.TabStop = false;
             this.PictureMap.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureMap_Paint);
             this.PictureMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureMap_MouseDown);
+            this.PictureMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureMap_MouseMove);
             // 
             // ScrollStartY
             // 
@@ -629,6 +748,17 @@
         private System.Windows.Forms.Label LabelGridOpacity;
         private System.Windows.Forms.Label LabelParallaxOpacity;
         private System.Windows.Forms.HScrollBar ScrollParallaxOpacity;
+        private System.Windows.Forms.Button ButtonBackColor4;
+        private System.Windows.Forms.Button ButtonForeColor4;
+        private System.Windows.Forms.Button ButtonBackColor3;
+        private System.Windows.Forms.Button ButtonForeColor3;
+        private System.Windows.Forms.Button ButtonBackColor2;
+        private System.Windows.Forms.Button ButtonForeColor2;
+        private System.Windows.Forms.Button ButtonBackColor1;
+        private System.Windows.Forms.Button ButtonForeColor1;
+        private System.Windows.Forms.Button ButtonBackColor0;
+        private System.Windows.Forms.Button ButtonForeColor0;
+        private System.Windows.Forms.ToolStripMenuItem MenuClose;
     }
 }
 
